@@ -1,6 +1,5 @@
 import React from 'react'
 import Moment from 'react-moment'
-// import style from '../style'
 import image from './nullimage.jpg'
 
 
