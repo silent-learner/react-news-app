@@ -26,8 +26,8 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/sports" element={<News setprogress={setprogress} API_KEY={API_KEY}  key="sports" category="sports" />} />
-          <Route path="/" element={<News setprogress={setprogress} API_KEY={API_KEY}   key="general" category="general" />} />
-          <Route path="/general" element={<News setprogress={setprogress} API_KEY={API_KEY}   key="general2" category="general" />} />
+          <Route path="/" element={<News setprogress={setprogress} API_KEY={API_KEY}   key="top" category="top" />} />
+          <Route path="/top" element={<News setprogress={setprogress} API_KEY={API_KEY}   key="world" category="top" />} />
           <Route path="/business" element={<News setprogress={setprogress} API_KEY={API_KEY}    key="business" category="business" />} />
           <Route path="/entertainment" element={<News setprogress={setprogress} API_KEY={API_KEY}   key="entertainment" category="entertainment" />} />
           <Route path="/health" element={<News setprogress={setprogress}  API_KEY={API_KEY}  key="health" category="health" />} />

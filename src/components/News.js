@@ -4,91 +4,47 @@ import NewsItem from './NewsItem'
 export default function News(props) {
 
     const [results, setresults] = useState([])
-    const [totalresults, settotalresults] = useState(0)
+    const [totalresults, settotalresults] = useState(18014)
     const [page, setpage] = useState(1)
-    const [loading, setloading] = useState(true)
+    const [loading, setloading] = useState(false)
     useEffect(() => {
-        let c = (p) => props.setprogress(p)
-        c(5)
-        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.API_KEY}&page=1&pageSize=12`
+        props.setprogress(10)
+        let url = `${process.env.REACT_APP_NEWS_API__BASE_URL}&category=${props.category}&page=${page}&country=in,us,pk&language=en`
         const fetchData = async () => {
             try {
                 const data = await fetch(url)
-                c(50)
+                props.setprogress(50)
                 const json = await data.json()
-                c(100)
-                setresults(json.articles)
+                const resultswith_image = (json.results).filter(news => {return news.image_url})
+                setresults(resultswith_image)
+                props.setprogress(100)
                 setloading(false)
                 settotalresults(json.totalResults)
-                setpage(1)
-
             } catch (error) {
                 console.log(error)
             }
-            // props.setprogress(100)
         }
         fetchData()
         // eslint-disable-next-line
-    },[])
+    }, [page])
     const prev = () => {
-        setloading(true)
-        let c = (p) => props.setprogress(p)
-        c(5)
-        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.API_KEY}&page=${page - 1}&pageSize=12`
-        const fetchData = async () => {
-            try {
-                const data = await fetch(url)
-                c(30)
-                const json = await data.json()
-                c(50)
-                setresults(json.articles)
-                c(70)
-                setloading(false)
-                setpage((page - 1))
-                c(100)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchData()
+        setpage(prevpage => prevpage - 1)
     }
     const next = () => {
-        // console.log(totalresults)
-        setloading(true)
-        let c = (p) => props.setprogress(p)
-        c(5)
-        const fetchData = async () => {
-            let url = `https://newsapi.org/v2/top-headlines?country=in&category=${props.category}&apiKey=${props.API_KEY}&page=${page + 1}&pageSize=12`
-            try {
-                const data = await fetch(url)
-                c(30)
-                const json = await data.json()
-                c(50)
-                setresults(json.articles)
-                c(70)
-                setloading(false)
-                setpage(page + 1)
-                c(100)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchData()
-
-
+        setpage(prevpage => prevpage + 1)
     }
     return (
-        <div className="container-md my-3">
-           {!loading && <div className="row">
+        <div className="container-fluid p-3">
+            {!loading && <div className="row justify-content-center">
 
                 {
                     results && results.map(result => {
-                        return <div key={result.url} className="col-sm-6 col-lg-3 p-3"><NewsItem imageurl={result.urlToImage} title={result.title ? result.title.slice(0, 50) : ''} description={result.description ? result.description.slice(0, 60) : ""} link={result.url} date={result.publishedAt} /></div>
+                        return <div key={result.link} className="col-sm-6 col-lg-3 p-3"><NewsItem imageurl={result.image_url} title={result.title ? result.title.slice(0, 50) : ''} description={result.full_description ? result.full_description.slice(0, 60) : ""} link={result.link} date={result.pubDate} /></div>
                     })
                 }
             </div>}
-            <button disabled={page <= 1} className="btn btn-outline-success float-start my-3" onClick={prev}>&larr; Previous</button>
-            <button disabled={(page + 1) > Math.ceil(totalresults / 20)} className="btn btn-outline-success float-end my-3" onClick={next}>Next &rarr;</button>
+            <button disabled={page <= 1} className="btn btn-outline-light float-start my-3" onClick={prev}>&larr; Previous</button>
+            <button disabled={(page + 1) > Math.ceil(totalresults / 10)} className="btn btn-outline-light float-end my-3" onClick={next}>Next &rarr;</button>
         </div>
     )
 }

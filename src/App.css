@@ -1,1 +1,8 @@
-
+body{
+    background-color: rgb(48, 46, 46);
+}
+ .item-style{
+     box-shadow: 5px 5px 15px #838383d7;
+     background-color: rgb(48, 46, 46);
+     color: #ffffff;
+ }
