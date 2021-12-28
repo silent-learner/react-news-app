@@ -10,7 +10,6 @@ import {
 import LoadingBar from 'react-top-loading-bar'
 import { useState } from 'react';
 
-
 function App() {
   const [progress, setprogress] = useState(0)
   const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
@@ -18,7 +17,7 @@ function App() {
     <>
       <Router>
       <LoadingBar
-        color='#2195ee'
+        color='#ffffff'
         progress={progress}
         height='2px'
         shadow="true"

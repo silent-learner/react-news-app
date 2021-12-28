@@ -4,22 +4,22 @@ import NewsItem from './NewsItem'
 export default function News(props) {
 
     const [results, setresults] = useState([])
-    const [totalresults, settotalresults] = useState(18014)
+    const [totalresults, settotalresults] = useState(0)
     const [page, setpage] = useState(1)
     const [loading, setloading] = useState(false)
     useEffect(() => {
+        setloading(true)
         props.setprogress(10)
-        let url = `${process.env.REACT_APP_NEWS_API__BASE_URL}&category=${props.category}&page=${page}&country=in,us,pk&language=en`
+        let url = `${process.env.REACT_APP_NEWS_API__BASE_URL}&category=${props.category}&page=${page}&language=en`
         const fetchData = async () => {
             try {
                 const data = await fetch(url)
                 props.setprogress(50)
                 const json = await data.json()
-                const resultswith_image = (json.results).filter(news => {return news.image_url})
-                setresults(resultswith_image)
-                props.setprogress(100)
-                setloading(false)
-                settotalresults(json.totalResults)
+                    setresults(json.results)
+                    props.setprogress(100)
+                    setloading(false)
+                    settotalresults(json.totalResults)
             } catch (error) {
                 console.log(error)
             }
